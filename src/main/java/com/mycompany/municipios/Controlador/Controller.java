@@ -26,7 +26,6 @@ public class Controller {
             case 3:
                 String origin = Municipios.municipios[origen];
                 String destiny = Municipios.municipios[destino];
-                System.out.print("\nOrigen: " + origin + " - Destino: " + destiny + "\n");
 
                 int[][] matriz = new int[Municipios.matrizAdyacencias.length][Municipios.matrizAdyacencias.length];
 
@@ -39,13 +38,6 @@ public class Controller {
                 }
                 Grafo grafo = new Grafo(Municipios.municipios, matriz);
                 ventana.textPane.setText(grafo.encontrarRutaMinimaDijkstra(origin, destiny));
-                break;
-            case 4:
-                System.out.println("Saliendo...");
-                break;
-            default:
-                System.out.println("Opción no válida");
-                System.out.println(opcion);
                 break;
         }
     }

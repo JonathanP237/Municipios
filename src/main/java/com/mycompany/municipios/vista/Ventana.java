@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+
+import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JTextPane;
 
@@ -115,5 +117,24 @@ public class Ventana extends JFrame {
 		comboBoxAlgoritmo.addItem("A*");
 		comboBoxAlgoritmo.addItem("Dijkstra");
 	}
-
+	
+	class Ciudad {
+        String nombre;
+        int x, y;
+        public Ciudad(String nombre, int x, int y) {
+            this.nombre = nombre;
+            this.x = x;
+            this.y = y;
+        }
+    }
+	
+	class Linea {
+        Ciudad ciudad1, ciudad2;
+        Color color;
+        public Linea(Ciudad ciudad1, Ciudad ciudad2, Color color) {
+            this.ciudad1 = ciudad1;
+            this.ciudad2 = ciudad2;
+            this.color = color;
+        }
+    }
 }
