@@ -76,7 +76,7 @@ public class Municipios {
     };
 
     public static int[][] coordenadasMapa = {
-        { 0, 0 }, // 1
+        { 342, 430 }, // 1
         { 0, 0 }, // 2
         { 0, 0 }, // 3
         { 0, 0 }, // 4

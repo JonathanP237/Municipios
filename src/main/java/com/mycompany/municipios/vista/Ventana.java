@@ -5,9 +5,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import com.mycompany.municipios.Controlador.Controller;
 import com.mycompany.municipios.Modelo.Municipios;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -34,6 +36,7 @@ public class Ventana extends JFrame {
 	 * Create the frame.
 	 */
 	public Ventana() {
+		ciudades = new ArrayList<>();
 		setResizable(false);// Se define que no sea modificable el tamaño
 		setSize(1050, 980);// define el tamaÃ±o de la ventana
 		setTitle("Rutas por Colombia");
@@ -132,6 +135,7 @@ public class Ventana extends JFrame {
 			}
 		};
 		btnRuta.addActionListener(accion1);
+		añadirCiudades();
 	}
 
 	private void agregarOpcionesComboBox(JComboBox<String> comboBoxOrigen, JComboBox<String> comboBoxDestino,
@@ -149,6 +153,13 @@ public class Ventana extends JFrame {
 		comboBoxAlgoritmo.addItem("Dijkstra");
 	}
 	
+	private void añadirCiudades(){
+		for(int i = 0; i<Municipios.coordenadasMapa.length; i++){
+			Ciudad ciudad = new Ciudad(Municipios.municipios[i], Municipios.coordenadasMapa[i][0], Municipios.coordenadasMapa[i][1]);
+			ciudades.add(ciudad);
+		}
+	}
+
 	class Ciudad {
         String nombre;
         int x, y;
