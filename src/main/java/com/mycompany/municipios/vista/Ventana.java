@@ -24,6 +24,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.JTextPane;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Ventana extends JFrame {
 
@@ -31,23 +33,21 @@ public class Ventana extends JFrame {
 	public JTextPane textPane = new JTextPane();
 	Controller control = new Controller(this);
 	private List<Ciudad> ciudades; // Lista de ciudades
-	private List<Linea> carreteras;
-	Image fondoMapa = new ImageIcon(getClass().getResource("mapa.jpg")).getImage();
+	private List<Linea> carreteras; // Lista de carreteras
+	Image fondoMapa = new ImageIcon(getClass().getResource("mapa.jpg")).getImage(); // Imagen de fondo
 
-	/**
-	 * Create the frame.
-	 */
+	// Constructor de la ventana
 	public Ventana() {
 		ciudades = new ArrayList<>();
 		setResizable(false);// Se define que no sea modificable el tamaño
 		setSize(1050, 980);// define el tamaÃ±o de la ventana
-		setTitle("Rutas por Colombia");
+		setTitle("Rutas por Colombia"); // Titulo de la ventana
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		iniciarComponentes();
+		iniciarComponentes(); // Inicializa los componentes de la ventana
 	}
 
 	public void iniciarComponentes() {
-
+		// Se crea un panel para agregar los componentes de la busqueda
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 195, 941);
 		panel.setLayout(null);
@@ -56,7 +56,7 @@ public class Ventana extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		contentPane.add(panel);
-
+		// Label para mostrar el origen, destino y algoritmo
 		JLabel lblOrigen = new JLabel("Origen:");
 		lblOrigen.setBounds(74, 27, 46, 14);
 		panel.add(lblOrigen);
@@ -68,7 +68,7 @@ public class Ventana extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("Algoritmo:");
 		lblNewLabel_1.setBounds(71, 188, 62, 14);
 		panel.add(lblNewLabel_1);
-
+		// ComboBox para seleccionar el origen, destino y algoritmo
 		JComboBox<String> comboBoxOrigen = new JComboBox<String>();
 		comboBoxOrigen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		comboBoxOrigen.setBounds(24, 62, 138, 22);
@@ -80,30 +80,38 @@ public class Ventana extends JFrame {
 		panel.add(comboBoxDestino);
 
 		JComboBox<String> comboBoxAlgoritmo = new JComboBox<String>();
+		comboBoxAlgoritmo.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				comboBoxOrigen.removeAllItems();
+				comboBoxDestino.removeAllItems();
+				agregarMunicipiosComboBox(comboBoxOrigen, comboBoxDestino, comboBoxAlgoritmo);
+			}
+		});
 		comboBoxAlgoritmo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		comboBoxAlgoritmo.setBounds(24, 223, 138, 22);
 		panel.add(comboBoxAlgoritmo);
-
+		// Boton para buscar la ruta
 		JButton btnRuta = new JButton("Buscar Ruta");
 		btnRuta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRuta.setBounds(44, 273, 105, 23);
 		panel.add(btnRuta);
-
-		agregarOpcionesComboBox(comboBoxOrigen, comboBoxDestino, comboBoxAlgoritmo);
-
+		// Se agregan las opciones a los comboBox
+		agregarMunicipiosComboBox(comboBoxOrigen, comboBoxDestino, comboBoxAlgoritmo);
+		agregarAlgotimosCombobox(comboBoxAlgoritmo);
+		// TextPane para mostrar la ruta
 		textPane.setEditable(false);
 		textPane.setBounds(10, 314, 166, 311);
 		panel.add(textPane);
-
+		// Panel para mostrar el mapa
 		JPanel panel_1 = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(fondoMapa, 0, 0, getWidth(), getHeight(), this);
-				
+
 				Graphics2D g2d = (Graphics2D) g;
 				float grosor = 2.5f; // Puedes cambiar este valor para ajustar el grosor
-    			g2d.setStroke(new BasicStroke(grosor));
+				g2d.setStroke(new BasicStroke(grosor));
 				if (carreteras != null) {
 					// Dibujar las líneas entre las ciudades
 					for (Linea linea : carreteras) {
@@ -114,7 +122,6 @@ public class Ventana extends JFrame {
 
 				// Dibujar las ciudades
 				if (ciudades != null) {
-					// Dibujar las ciudades
 					for (Ciudad ciudad : ciudades) {
 						g.setColor(Color.RED);
 						g.fillOval(ciudad.x - 5, ciudad.y - 5, 10, 10); // Punto de la ciudad
@@ -125,49 +132,57 @@ public class Ventana extends JFrame {
 		};
 		panel_1.setBounds(205, 0, 819, 941);
 		contentPane.add(panel_1);
-
-		ActionListener accion1 = new ActionListener() {
+		// Accion del boton buscar ruta
+		ActionListener buscarRuta = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Limpiar la ruta anterior
 				for (Linea linea : carreteras) {
 					linea.color = Color.BLACK;
 				}
-				if (comboBoxDestino.getSelectedIndex() == 0) {
-					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), comboBoxDestino.getSelectedIndex(),
-							comboBoxAlgoritmo.getSelectedIndex() + 1);	
-					pintarRuta();				
-				} else {
+				// Buscar la nueva ruta Si el destino es Cucuta
+				if (comboBoxDestino.getSelectedIndex() == 7) {
 					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), 7,
+							comboBoxAlgoritmo.getSelectedIndex() + 1);
+					pintarRuta();
+				} else {
+					// Si el destino es cualquier otro municipio
+					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), comboBoxDestino.getSelectedIndex(),
 							comboBoxAlgoritmo.getSelectedIndex() + 1);
 					pintarRuta();
 				}
 			}
 		};
-		btnRuta.addActionListener(accion1);
+		btnRuta.addActionListener(buscarRuta);
 		añadirCiudades();
 		añadirCarretera();
 	}
 
-	private void agregarOpcionesComboBox(JComboBox<String> comboBoxOrigen, JComboBox<String> comboBoxDestino,
+	// Agregar las opciones a los comboBox
+	private void agregarMunicipiosComboBox(JComboBox<String> comboBoxOrigen, JComboBox<String> comboBoxDestino,
 			JComboBox<String> comboBoxAlgoritmo) {
 		String[] opciones = Municipios.municipios;
-
 		for (String opcion : opciones) {
 			comboBoxOrigen.addItem(opcion);
 		}
-		if(comboBoxAlgoritmo.getSelectedIndex()==1){
+		if (comboBoxAlgoritmo.getSelectedIndex() == 1) {
 			comboBoxDestino.addItem(opciones[0]);
 			comboBoxDestino.addItem(opciones[7]);
-		}else{
+		} else {
 			for (String opcion : opciones) {
 				comboBoxDestino.addItem(opcion);
 			}
 		}
+	}
+	
+	private void agregarAlgotimosCombobox(JComboBox<String> comboBoxAlgoritmo) {
+
 		comboBoxAlgoritmo.addItem("Avaro");
 		comboBoxAlgoritmo.addItem("A*");
 		comboBoxAlgoritmo.addItem("Dijkstra");
 	}
 
+	// Añadir las ciudades al mapa
 	private void añadirCiudades() {
 		for (int i = 0; i < Municipios.coordenadasMapa.length; i++) {
 			Ciudad ciudad = new Ciudad(Municipios.municipios[i], Municipios.coordenadasMapa[i][0],
@@ -175,8 +190,8 @@ public class Ventana extends JFrame {
 			ciudades.add(ciudad);
 		}
 	}
-
-	private void añadirCarretera(){
+	// Añadir las carreteras al mapa
+	private void añadirCarretera() {
 		carreteras = new ArrayList<>();
 		for (int i = 0; i < Municipios.matrizAdyacencias.length; i++) {
 			for (int j = 0; j < Municipios.matrizAdyacencias[i].length; j++) {
@@ -188,20 +203,22 @@ public class Ventana extends JFrame {
 		}
 		repaint();
 	}
-
-	public void pintarRuta(){
+	// Pintar la ruta en el mapa
+	public void pintarRuta() {
 		String[] ruta = textPane.getText().split(" -> ");
-					for (int i = 0; i < ruta.length - 1; i++) {
-						for (int j = 0; j < carreteras.size(); j++) {
-							if (ruta[i].equals(carreteras.get(j).ciudad1.nombre) && ruta[i + 1].equals(carreteras.get(j).ciudad2.nombre)) {
-								carreteras.get(j).color = Color.RED;
-								repaint();
-							} else if (ruta[i].equals(carreteras.get(j).ciudad2.nombre) && ruta[i + 1].equals(carreteras.get(j).ciudad1.nombre)) {
-								carreteras.get(j).color = Color.RED;
-								repaint();
-							}
-						}
-					}
+		for (int i = 0; i < ruta.length - 1; i++) {
+			for (int j = 0; j < carreteras.size(); j++) {
+				if (ruta[i].equals(carreteras.get(j).ciudad1.nombre)
+						&& ruta[i + 1].equals(carreteras.get(j).ciudad2.nombre)) {
+					carreteras.get(j).color = Color.RED;
+					repaint();
+				} else if (ruta[i].equals(carreteras.get(j).ciudad2.nombre)
+						&& ruta[i + 1].equals(carreteras.get(j).ciudad1.nombre)) {
+					carreteras.get(j).color = Color.RED;
+					repaint();
+				}
+			}
+		}
 	}
 
 	class Ciudad {

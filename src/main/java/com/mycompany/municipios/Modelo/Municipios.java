@@ -9,7 +9,7 @@ package com.mycompany.municipios.Modelo;
  * @author JyL
  */
 public class Municipios {
-
+        // Matriz de adyacencias
     public static int[][] matrizAdyacencias = {
             // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29
             // 30
@@ -74,7 +74,7 @@ public class Municipios {
             { -1, 233, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 238, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
                     -1, -1, 143, 0 } // 30
     };
-
+    // Coordenadas de los municipios en el mapa
     public static int[][] coordenadasMapa = {
         { 348, 449 }, // 1
         { 263, 371 }, // 2
@@ -107,7 +107,7 @@ public class Municipios {
         { 367, 318 }, // 29
         { 330, 345 } // 30
     };
-
+    // Nombres de los municipios
     public static String[] municipios = {
             "Bogota",
             "Medellin",
