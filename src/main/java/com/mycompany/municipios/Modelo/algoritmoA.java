@@ -169,7 +169,7 @@ public class algoritmoA {
         ruta.add(ciudades[actual]);
         Collections.reverse(ruta);
 
-        return String.join(" -> ", ruta) + " | Distancia total: " + distanciaTotal + " km";
+        return String.join(" -> ", ruta) + " -> Distancia total: " + distanciaTotal + " km";
     }
 
     private static class Nodo {

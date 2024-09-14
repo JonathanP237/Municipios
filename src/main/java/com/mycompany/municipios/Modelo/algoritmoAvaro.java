@@ -29,7 +29,7 @@ public class algoritmoAvaro {
         }
         resultado.setLength(resultado.length() - 4); // Eliminar la última flecha
 
-        resultado.append(" | Distancia total: ").append(distanciaTotal[0]).append(" km");
+        resultado.append(" -> Distancia total: ").append(distanciaTotal[0]).append(" km");
 
         return resultado.toString();
     }

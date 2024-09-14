@@ -57,7 +57,7 @@ public class Grafo {
         // recorre la pila para armar la ruta en el orden correcto
         while (!pila.isEmpty())
             ruta += (pila.pop().muni + " -> ");
-        return distancia + "km: " + ruta;
+        return ruta + distancia + "km: ";
     }
 
     // encuentra la ruta más corta desde el nodo inicial a todos los demás
