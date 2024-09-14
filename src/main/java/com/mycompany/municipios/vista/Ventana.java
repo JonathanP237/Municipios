@@ -144,7 +144,7 @@ public class Ventana extends JFrame {
 					ciudad.color = Color.RED;
 				}
 				// Buscar la nueva ruta Si el destino es Cucuta
-				if (comboBoxDestino.getSelectedIndex() == 1) {
+				if (comboBoxDestino.getSelectedIndex() == 1 && comboBoxAlgoritmo.getSelectedIndex() == 1) {
 					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), 7,
 							comboBoxAlgoritmo.getSelectedIndex() + 1);
 					pintarRuta();
