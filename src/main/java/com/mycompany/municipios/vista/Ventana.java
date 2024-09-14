@@ -123,7 +123,7 @@ public class Ventana extends JFrame {
 				// Dibujar las ciudades
 				if (ciudades != null) {
 					for (Ciudad ciudad : ciudades) {
-						g.setColor(Color.RED);
+						g.setColor(ciudad.color);
 						g.fillOval(ciudad.x - 5, ciudad.y - 5, 10, 10); // Punto de la ciudad
 						g.drawString(ciudad.nombre, ciudad.x + 10, ciudad.y); // Nombre de la ciudad
 					}
@@ -140,8 +140,11 @@ public class Ventana extends JFrame {
 				for (Linea linea : carreteras) {
 					linea.color = Color.BLACK;
 				}
+				for (Ciudad ciudad : ciudades) {
+					ciudad.color = Color.RED;
+				}
 				// Buscar la nueva ruta Si el destino es Cucuta
-				if (comboBoxDestino.getSelectedIndex() == 7) {
+				if (comboBoxDestino.getSelectedIndex() == 1) {
 					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), 7,
 							comboBoxAlgoritmo.getSelectedIndex() + 1);
 					pintarRuta();
@@ -210,11 +213,19 @@ public class Ventana extends JFrame {
 			for (int j = 0; j < carreteras.size(); j++) {
 				if (ruta[i].equals(carreteras.get(j).ciudad1.nombre)
 						&& ruta[i + 1].equals(carreteras.get(j).ciudad2.nombre)) {
-					carreteras.get(j).color = Color.RED;
+					carreteras.get(j).color = Color.CYAN;
 					repaint();
 				} else if (ruta[i].equals(carreteras.get(j).ciudad2.nombre)
 						&& ruta[i + 1].equals(carreteras.get(j).ciudad1.nombre)) {
-					carreteras.get(j).color = Color.RED;
+					carreteras.get(j).color = Color.CYAN;
+					repaint();
+				}
+			}
+		}
+		for (int i = 0; i < ciudades.size(); i++) {
+			for(int j = 0; j < ruta.length; j++) {
+				if (ruta[j].equals(ciudades.get(i).nombre)) {
+					ciudades.get(i).color = Color.GREEN;
 					repaint();
 				}
 			}
@@ -224,6 +235,7 @@ public class Ventana extends JFrame {
 	class Ciudad {
 		String nombre;
 		int x, y;
+		Color color = Color.RED;
 
 		public Ciudad(String nombre, int x, int y) {
 			this.nombre = nombre;
