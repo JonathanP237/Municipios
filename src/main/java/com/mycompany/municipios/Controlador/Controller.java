@@ -1,6 +1,7 @@
 package com.mycompany.municipios.Controlador;
 
 import com.mycompany.municipios.Modelo.Grafo;
+import com.mycompany.municipios.Modelo.ArbolExpansionMinima;
 import com.mycompany.municipios.Modelo.Municipios;
 import com.mycompany.municipios.Modelo.algoritmoA;
 import com.mycompany.municipios.Modelo.algoritmoAvaro;
@@ -40,37 +41,10 @@ public class Controller {
                 ventana.textPane.setText(grafo.encontrarRutaMinimaDijkstra(origin, destiny));
                 break;
             case 4:
-                String originPrim = Municipios.municipios[origen];
-                String destinyPrim = Municipios.municipios[destino];
-
-                int[][] matrizPrim = new int[Municipios.matrizAdyacencias.length][Municipios.matrizAdyacencias.length];
-
-                for (int i = 0; i < Municipios.matrizAdyacencias.length; i++) {
-                    for (int j = 0; j < Municipios.matrizAdyacencias[i].length; j++) {
-                        if (Municipios.matrizAdyacencias[i][j] != -1 && i != j) {
-                            matrizPrim[i][j] = Municipios.matrizAdyacencias[i][j];
-                        }
-                    }
-                }
-                Grafo grafoPrim = new Grafo(Municipios.municipios, matrizPrim);
-                ventana.textPane.setText(grafoPrim.encontrarRutaMinimaPrim(originPrim, destinyPrim));
-                break;
-                
-            case 5:
-                String originKruskal = Municipios.municipios[origen];
-                String destinyKruskal = Municipios.municipios[destino];
-
-                int[][] matrizKruskal = new int[Municipios.matrizAdyacencias.length][Municipios.matrizAdyacencias.length];
-
-                for (int i = 0; i < Municipios.matrizAdyacencias.length; i++) {
-                    for (int j = 0; j < Municipios.matrizAdyacencias[i].length; j++) {
-                        if (Municipios.matrizAdyacencias[i][j] != -1 && i != j) {
-                            matrizKruskal[i][j] = Municipios.matrizAdyacencias[i][j];
-                        }
-                    }
-                }
-                Grafo grafoKruskal = new Grafo(Municipios.municipios, matrizKruskal);
-                ventana.textPane.setText(grafoKruskal.encontrarRutaMinimaPrim(originKruskal, destinyKruskal));
+                ventana.textPane.setText(ArbolExpansionMinima.ejecutarAlgoritmoPrim(Municipios.matrizAdyacencias, Municipios.municipios));
+                break;                
+            case 5:                
+                ventana.textPane.setText(ArbolExpansionMinima.ejecutarAlgoritmoKruskal(Municipios.matrizAdyacencias, Municipios.municipios));
                 break;
             
             case 6:
@@ -87,7 +61,7 @@ public class Controller {
                     }
                 }
                 Grafo grafoBell = new Grafo(Municipios.municipios, matrizBell);
-                ventana.textPane.setText(grafoBell.encontrarRutaMinimaPrim(originBell, destinyBell));
+                ventana.textPane.setText(grafoBell.encontrarRutaMinimaBellmanFord(originBell, destinyBell));
                 break;
         }
     }

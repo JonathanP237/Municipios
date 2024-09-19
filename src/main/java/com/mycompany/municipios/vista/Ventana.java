@@ -1,11 +1,12 @@
 package com.mycompany.municipios.vista;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import com.mycompany.municipios.Controlador.Controller;
 import com.mycompany.municipios.Modelo.Municipios;
-
+import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -100,7 +101,7 @@ public class Ventana extends JFrame {
 		agregarAlgotimosCombobox(comboBoxAlgoritmo);
 		// TextPane para mostrar la ruta
 		textPane.setEditable(false);
-		textPane.setBounds(10, 314, 166, 311);
+		textPane.setBounds(10, 314, 166, 596);
 		panel.add(textPane);
 		// Panel para mostrar el mapa
 		JPanel panel_1 = new JPanel() {
@@ -148,17 +149,21 @@ public class Ventana extends JFrame {
 					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), 7,
 							comboBoxAlgoritmo.getSelectedIndex() + 1);
 					pintarRuta();
-				} else {
+				} else if (comboBoxAlgoritmo.getSelectedIndex() == 3 || comboBoxAlgoritmo.getSelectedIndex() == 4) {
 					// Si el destino es cualquier otro municipio
 					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), comboBoxDestino.getSelectedIndex(),
 							comboBoxAlgoritmo.getSelectedIndex() + 1);
+					pintarArbolMin();
+				} else{
+					control.ejecutarAlgoritmo(comboBoxOrigen.getSelectedIndex(), comboBoxDestino.getSelectedIndex(),
+							comboBoxAlgoritmo.getSelectedIndex() + 1);			
 					pintarRuta();
 				}
 			}
 		};
 		btnRuta.addActionListener(buscarRuta);
-		añadirCiudades();
-		añadirCarretera();
+		anadirCiudades();
+		anadirCarretera();
 	}
 
 	// Agregar las opciones a los comboBox
@@ -189,7 +194,7 @@ public class Ventana extends JFrame {
 	}
 
 	// Añadir las ciudades al mapa
-	private void añadirCiudades() {
+	private void anadirCiudades() {
 		for (int i = 0; i < Municipios.coordenadasMapa.length; i++) {
 			Ciudad ciudad = new Ciudad(Municipios.municipios[i], Municipios.coordenadasMapa[i][0],
 					Municipios.coordenadasMapa[i][1]);
@@ -197,7 +202,7 @@ public class Ventana extends JFrame {
 		}
 	}
 	// Añadir las carreteras al mapa
-	private void añadirCarretera() {
+	private void anadirCarretera() {
 		carreteras = new ArrayList<>();
 		for (int i = 0; i < Municipios.matrizAdyacencias.length; i++) {
 			for (int j = 0; j < Municipios.matrizAdyacencias[i].length; j++) {
@@ -229,6 +234,31 @@ public class Ventana extends JFrame {
 			for(int j = 0; j < ruta.length; j++) {
 				if (ruta[j].equals(ciudades.get(i).nombre)) {
 					ciudades.get(i).color = Color.GREEN;
+					repaint();
+				}
+			}
+		}
+	}
+
+	public void pintarArbolMin(){
+		List<String[]> rutaAux = new ArrayList<>();
+		String ruta = textPane.getText();
+    	Pattern pattern = Pattern.compile("(\\w+) -> (\\w+)");
+    	Matcher matcher = pattern.matcher(ruta);
+
+    while (matcher.find()) {
+        String origen = matcher.group(1);
+        String destino = matcher.group(2);
+        rutaAux.add(new String[]{origen, destino});
+    	}
+
+		for(int i = 0; i < rutaAux.size(); i++){
+			for(int j = 0; j < carreteras.size(); j++){
+				if(rutaAux.get(i)[0].equals(carreteras.get(j).ciudad1.nombre) && rutaAux.get(i)[1].equals(carreteras.get(j).ciudad2.nombre)){
+					carreteras.get(j).color = Color.CYAN;
+					repaint();
+				}else if(rutaAux.get(i)[0].equals(carreteras.get(j).ciudad2.nombre) && rutaAux.get(i)[1].equals(carreteras.get(j).ciudad1.nombre)){
+					carreteras.get(j).color = Color.CYAN;
 					repaint();
 				}
 			}

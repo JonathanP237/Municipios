@@ -138,6 +138,6 @@ public class Municipios {
             "Yopal",
             "Melgar",
             "Barrancabermeja",
-            "Puerto Berrio"
+            "PuertoBerrio"
     };
 }
