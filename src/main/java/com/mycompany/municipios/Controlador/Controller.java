@@ -39,6 +39,56 @@ public class Controller {
                 Grafo grafo = new Grafo(Municipios.municipios, matriz);
                 ventana.textPane.setText(grafo.encontrarRutaMinimaDijkstra(origin, destiny));
                 break;
+            case 4:
+                String originPrim = Municipios.municipios[origen];
+                String destinyPrim = Municipios.municipios[destino];
+
+                int[][] matrizPrim = new int[Municipios.matrizAdyacencias.length][Municipios.matrizAdyacencias.length];
+
+                for (int i = 0; i < Municipios.matrizAdyacencias.length; i++) {
+                    for (int j = 0; j < Municipios.matrizAdyacencias[i].length; j++) {
+                        if (Municipios.matrizAdyacencias[i][j] != -1 && i != j) {
+                            matrizPrim[i][j] = Municipios.matrizAdyacencias[i][j];
+                        }
+                    }
+                }
+                Grafo grafoPrim = new Grafo(Municipios.municipios, matrizPrim);
+                ventana.textPane.setText(grafoPrim.encontrarRutaMinimaPrim(originPrim, destinyPrim));
+                break;
+                
+            case 5:
+                String originKruskal = Municipios.municipios[origen];
+                String destinyKruskal = Municipios.municipios[destino];
+
+                int[][] matrizKruskal = new int[Municipios.matrizAdyacencias.length][Municipios.matrizAdyacencias.length];
+
+                for (int i = 0; i < Municipios.matrizAdyacencias.length; i++) {
+                    for (int j = 0; j < Municipios.matrizAdyacencias[i].length; j++) {
+                        if (Municipios.matrizAdyacencias[i][j] != -1 && i != j) {
+                            matrizKruskal[i][j] = Municipios.matrizAdyacencias[i][j];
+                        }
+                    }
+                }
+                Grafo grafoKruskal = new Grafo(Municipios.municipios, matrizKruskal);
+                ventana.textPane.setText(grafoKruskal.encontrarRutaMinimaPrim(originKruskal, destinyKruskal));
+                break;
+            
+            case 6:
+                String originBell = Municipios.municipios[origen];
+                String destinyBell = Municipios.municipios[destino];
+
+                int[][] matrizBell = new int[Municipios.matrizAdyacencias.length][Municipios.matrizAdyacencias.length];
+
+                for (int i = 0; i < Municipios.matrizAdyacencias.length; i++) {
+                    for (int j = 0; j < Municipios.matrizAdyacencias[i].length; j++) {
+                        if (Municipios.matrizAdyacencias[i][j] != -1 && i != j) {
+                            matrizBell[i][j] = Municipios.matrizAdyacencias[i][j];
+                        }
+                    }
+                }
+                Grafo grafoBell = new Grafo(Municipios.municipios, matrizBell);
+                ventana.textPane.setText(grafoBell.encontrarRutaMinimaPrim(originBell, destinyBell));
+                break;
         }
     }
 }

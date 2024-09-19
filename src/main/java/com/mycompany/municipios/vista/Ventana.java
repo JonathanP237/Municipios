@@ -183,6 +183,9 @@ public class Ventana extends JFrame {
 		comboBoxAlgoritmo.addItem("Avaro");
 		comboBoxAlgoritmo.addItem("A*");
 		comboBoxAlgoritmo.addItem("Dijkstra");
+                comboBoxAlgoritmo.addItem("Prim");
+                comboBoxAlgoritmo.addItem("Kruskal");
+                comboBoxAlgoritmo.addItem("Bellmanford");
 	}
 
 	// Añadir las ciudades al mapa
